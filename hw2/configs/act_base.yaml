@@ -1,0 +1,26 @@
+# ACT configuration shared by every condition (only the dataset changes).
+model:
+  chunk_size: 20         # k: actions predicted per query (0.4 s at 50 Hz)
+  d_model: 256
+  n_heads: 8
+  n_enc_layers: 4
+  n_dec_layers: 4
+  n_cvae_layers: 4
+  dim_feedforward: 1024
+  dropout: 0.1
+  latent_dim: 32
+
+train:
+  num_steps: 30000       # fixed gradient steps for every dataset size
+  batch_size: 256
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  kl_weight: 10.0        # beta, ACT default
+  grad_clip: 10.0
+  log_every: 100
+  val_every: 1000
+
+eval:
+  execution: temporal_ensemble   # or "chunk": execute exec_horizon actions open-loop
+  ensemble_m: 0.01               # w_i = exp(-m * i), i = 0 is the oldest prediction
+  exec_horizon: 20               # used only when execution == "chunk"
