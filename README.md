@@ -1,15 +1,6 @@
 # CSCI 645 Homework 2: Imitation Learning for Robot Manipulation
 
-**Deadline:** Friday October 30, 11:59 PM Pacific Time  
-
-**Submission:** One ZIP file on Brightspace with your code and the writeup
-
 **Framework:** this homework will use [MuJoCo Playground](https://github.com/google-deepmind/mujoco_playground)
-
-
-Changelog:
-
-- 10/09/2026: initial release.
 
 
 ## Overview
