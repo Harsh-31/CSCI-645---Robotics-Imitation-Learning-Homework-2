@@ -1,0 +1,80 @@
+{
+  "dataset": "baseline",
+  "all_attempted_episodes": {
+    "n_trajectories": 110,
+    "episode_length_steps": {
+      "mean": 150.0,
+      "std": 0.0,
+      "min": 150.0,
+      "max": 150.0
+    },
+    "success_fraction": 1.0,
+    "time_to_success_steps": {
+      "mean": 38.90909090909091,
+      "std": 11.94954959557849,
+      "min": 25.0,
+      "max": 86.0
+    },
+    "return": {
+      "mean": 1448.7841175426136,
+      "std": 131.3755756015698,
+      "min": 1118.4173583984375,
+      "max": 1630.733642578125
+    },
+    "final_box_target_dist_m": {
+      "mean": 0.009001957365862009,
+      "std": 0.008141188556060016,
+      "min": 0.000940049416385591,
+      "max": 0.04528333246707916
+    },
+    "action_jitter": {
+      "mean": 0.029415200227363544,
+      "std": 0.004541201285287837,
+      "min": 0.022297626361250877,
+      "max": 0.046372197568416595
+    },
+    "terminated_out_of_bounds": 0
+  },
+  "training_pool": {
+    "n_trajectories": 100,
+    "episode_length_steps": {
+      "mean": 150.0,
+      "std": 0.0,
+      "min": 150.0,
+      "max": 150.0
+    },
+    "success_fraction": 1.0,
+    "time_to_success_steps": {
+      "mean": 39.25,
+      "std": 12.351821727988144,
+      "min": 25.0,
+      "max": 86.0
+    },
+    "return": {
+      "mean": 1448.480166015625,
+      "std": 130.46070676986665,
+      "min": 1118.4173583984375,
+      "max": 1630.733642578125
+    },
+    "final_box_target_dist_m": {
+      "mean": 0.00881447329535149,
+      "std": 0.007903952620687335,
+      "min": 0.0010424060747027397,
+      "max": 0.04528333246707916
+    },
+    "action_jitter": {
+      "mean": 0.02943206625059247,
+      "std": 0.004643230538809646,
+      "min": 0.022297626361250877,
+      "max": 0.046372197568416595
+    },
+    "terminated_out_of_bounds": 0
+  },
+  "teacher_success_rate_collection": 1.0,
+  "filtering": "only successful episodes are used for training",
+  "subsets": {
+    "25": 25,
+    "50": 50,
+    "100": 100
+  }
+}

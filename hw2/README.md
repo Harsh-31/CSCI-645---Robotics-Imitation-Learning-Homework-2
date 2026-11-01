@@ -20,7 +20,9 @@ hw2/
 │   ├── act/                  # ACT model, dataset, training, inference
 │   ├── eval_policy.py        # ACT student on held-out seeds (+ videos)
 │   ├── render_videos.py      # MP4s from stored rollouts
-│   └── analyze.py            # tables and plots
+│   ├── check_replay.py       # open-loop replay diagnostic (obs/action alignment)
+│   ├── analyze.py            # tables and plots
+│   └── coverage_analysis.py  # success vs distance to nearest training demo (runs on CPU)
 ├── configs/                  # act_base.yaml, split_<dataset>.json (seeds/subsets)
 ├── slurm/                    # CARC job scripts
 ├── results/                  # eval JSON, loss CSVs, summary tables, plots
@@ -60,22 +62,26 @@ ACCOUNT=<acct> bash slurm/submit_all.sh
 squeue -u $USER                             # monitor; logs in hw2/logs/
 
 # 3) Tables and plots (login node is fine)
-source slurm/env.sh && python code/analyze.py
+source slurm/env.sh && python code/analyze.py && python code/coverage_analysis.py
 ```
 
 Run the stages individually:
 
 ```bash
 source slurm/env.sh
-python code/train_teacher.py --seed 0                    # PPO, 20M steps
+python code/sanity_random_rollout.py                     # also run by setup_carc.sh
+python code/train_teacher.py --seed 0                    # PPO, 20M steps configured (32.8M actual, see notes)
 python code/eval_teacher.py --policy teacher --ckpt $HW2_DATA/teacher/checkpoints --all_checkpoints
 python code/eval_teacher.py --policy zero
 python code/eval_teacher.py --policy random
+python code/render_videos.py --rollout "$(ls -d $HW2_DATA/rollouts/teacher_*.npz | sort | tail -1)" --n 1 --prefix teacher
 python code/collect_demos.py --ckpt $HW2_DATA/teacher/checkpoints --name baseline
 python code/inspect_demos.py --name baseline
+python code/check_replay.py --name baseline --batch 64    # GPU; replay diagnostic in report Q7
 python code/act/train.py --dataset baseline --n_demos 100 --seed 0
 python code/eval_policy.py --run act_baseline_n100_s0 --videos 2
 python code/analyze.py
+python code/coverage_analysis.py                          # CPU-only, a few seconds
 ```
 
 Optional Option B (noisy demonstrations):
@@ -95,7 +101,10 @@ Optional Option B (noisy demonstrations):
   which was removed in jax 0.10.
 - The teacher uses Playground's tuned PPO hyperparameters for PandaPickCube, with
   `impl="jax"` instead of the default `warp`, and `num_evals=11` so that
-  intermediate checkpoints are saved.
+  intermediate checkpoints are saved. Brax rounds training up to whole evaluation
+  intervals, so the configured 20M steps ran as 32.8M.
+- Student videos in `videos/` are rendered for training seed 0 only. Results in
+  `results/` cover all 3 seeds.
 - ACT is adapted from https://github.com/tonyzhaozh/act (state-only, no image
   backbone). See the header of `code/act/model.py`.
 - Weights & Biases logging is optional (`--wandb`, offline by default on CARC).

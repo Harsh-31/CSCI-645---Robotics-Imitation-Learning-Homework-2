@@ -9,7 +9,7 @@ TMP=$(mktemp -d)
 mkdir "$TMP/$NAME"
 cp -r "$HERE"/{README.md,requirements.txt,code,configs,slurm,results,videos} "$TMP/$NAME/"
 [ -f "$HERE/report/report.pdf" ] && cp "$HERE/report/report.pdf" "$TMP/$NAME/" || echo "WARNING: report/report.pdf missing"
-find "$TMP/$NAME" -name "__pycache__" -prune -exec rm -rf {} +
+find "$TMP/$NAME" \( -name "__pycache__" -o -name ".DS_Store" \) -prune -exec rm -rf {} +
 if grep -rIlE "(api[_-]?key|WANDB_API_KEY|password)\s*[:=]" "$TMP/$NAME"; then
   echo "Possible secret found above; aborting."; exit 1
 fi

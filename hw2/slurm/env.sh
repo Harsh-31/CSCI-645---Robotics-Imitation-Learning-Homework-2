@@ -10,6 +10,9 @@ export MUJOCO_GL=egl                        # headless rendering (fallback: osme
 export PYOPENGL_PLATFORM=egl
 export XLA_PYTHON_CLIENT_PREALLOCATE=false  # let JAX and PyTorch share the GPU
 export XLA_PYTHON_CLIENT_MEM_FRACTION=${XLA_PYTHON_CLIENT_MEM_FRACTION:-0.5}
+# Login nodes cap per-user threads; OpenBLAS would otherwise try one per core.
+export OPENBLAS_NUM_THREADS=${OPENBLAS_NUM_THREADS:-${SLURM_CPUS_PER_TASK:-1}}
+export OMP_NUM_THREADS=${OMP_NUM_THREADS:-${SLURM_CPUS_PER_TASK:-1}}
 export WANDB_MODE=${WANDB_MODE:-offline}    # `wandb sync $HW2_DATA/wandb/...` later
 export WANDB_DIR=$HW2_DATA/wandb
 mkdir -p "$HW2_DATA" "$WANDB_DIR" "$HW2_ROOT/logs"

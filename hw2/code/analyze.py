@@ -100,11 +100,35 @@ def main():
         f"| {cond} | {int(r.n_demos)} | {t_rate:.0%} | "
         f"{r.student_success_mean:.1%} ± {std:.1%} [{lo:.2f}, {hi:.2f}] "
         f"({int(r.n_seeds)} seeds) | {int(r.eval_episodes_per_run)} per seed |")
-  for _, r in ref.iterrows():
+  # Only the final teacher and the trivial policies go in the main table; the
+  # per-checkpoint teacher curve gets its own table and plot.
+  shown = ref[~ref.name.str.startswith("teacher_")]
+  if teacher is not None:
+    shown = pd.concat([ref[ref.name == teacher["name"]], shown])
+  for _, r in shown.iterrows():
     lines.append(f"| Reference: {r['name']} | – | – | {r.success_rate:.1%} | "
                  f"{r.eval_episodes} |")
   (RES / "summary.md").write_text("\n".join(lines) + "\n")
   print("\n".join(lines))
+
+  # --- Teacher success over PPO training -------------------------------------
+  if len(teachers) > 1:
+    tc = teachers.assign(env_steps=teachers.name.str.split("_").str[1].astype(int))
+    tc = tc.sort_values("env_steps")
+    tlines = ["| PPO env steps | Teacher success | 95% CI |", "|---:|---:|---:|"]
+    tlines += [f"| {int(r.env_steps):,} | {r.success_rate:.0%} | "
+               f"[{r.ci_lo:.2f}, {r.ci_hi:.2f}] |" for _, r in tc.iterrows()]
+    (RES / "teacher_checkpoints.md").write_text("\n".join(tlines) + "\n")
+    print("\n" + "\n".join(tlines))
+    fig, ax = plt.subplots(figsize=(5, 3.5))
+    ax.errorbar(tc.env_steps / 1e6, tc.success_rate,
+                yerr=[tc.success_rate - tc.ci_lo, tc.ci_hi - tc.success_rate],
+                fmt="o-", capsize=3)
+    ax.set(xlabel="PPO environment steps (millions)", ylabel="success rate",
+           ylim=(-0.02, 1.02), title="Teacher success on held-out seeds")
+    fig.tight_layout()
+    fig.savefig(RES / "teacher_checkpoints.png", dpi=150)
+    plt.close(fig)
 
   # --- Success vs # demos ---------------------------------------------------
   if len(st):
@@ -154,7 +178,7 @@ def main():
       cats[int(r.n_demos)][c] += k
   if cats:
     cdf = pd.DataFrame(cats).fillna(0).T.sort_index()
-    cdf = cdf.div(cdf.sum(1), axis=0)
+    cdf = cdf.div(cdf.sum(axis=1), axis=0)
     ax = cdf.plot(kind="bar", stacked=True, figsize=(7, 4), colormap="tab10")
     ax.set(xlabel="# demonstrations", ylabel="fraction of eval episodes",
            title="Outcome categories (pooled over seeds)")

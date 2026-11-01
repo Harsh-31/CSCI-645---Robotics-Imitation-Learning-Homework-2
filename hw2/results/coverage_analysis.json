@@ -1,0 +1,128 @@
+{
+  "25": {
+    "mean_nn_dist_m": 0.04066811129450798,
+    "spearman_nn_vs_success": -0.12327632763276326,
+    "bins": [
+      {
+        "bin_m": [
+          0.0,
+          0.02
+        ],
+        "n_episodes": 22,
+        "success": 0.2121212121212121,
+        "never_reached_box": 0.5606060606060607
+      },
+      {
+        "bin_m": [
+          0.02,
+          0.04
+        ],
+        "n_episodes": 28,
+        "success": 0.09523809523809525,
+        "never_reached_box": 0.6547619047619048
+      },
+      {
+        "bin_m": [
+          0.04,
+          0.06
+        ],
+        "n_episodes": 31,
+        "success": 0.17204301075268816,
+        "never_reached_box": 0.4623655913978495
+      },
+      {
+        "bin_m": [
+          0.06,
+          1.0
+        ],
+        "n_episodes": 19,
+        "success": 0.05263157894736842,
+        "never_reached_box": 0.7368421052631579
+      }
+    ]
+  },
+  "50": {
+    "mean_nn_dist_m": 0.029239457100629807,
+    "spearman_nn_vs_success": -0.2388118811881188,
+    "bins": [
+      {
+        "bin_m": [
+          0.0,
+          0.02
+        ],
+        "n_episodes": 35,
+        "success": 0.5142857142857142,
+        "never_reached_box": 0.18095238095238095
+      },
+      {
+        "bin_m": [
+          0.02,
+          0.04
+        ],
+        "n_episodes": 38,
+        "success": 0.3508771929824562,
+        "never_reached_box": 0.2894736842105263
+      },
+      {
+        "bin_m": [
+          0.04,
+          0.06
+        ],
+        "n_episodes": 23,
+        "success": 0.33333333333333337,
+        "never_reached_box": 0.18840579710144925
+      },
+      {
+        "bin_m": [
+          0.06,
+          1.0
+        ],
+        "n_episodes": 4,
+        "success": 0.0,
+        "never_reached_box": 0.9166666666666666
+      }
+    ]
+  },
+  "100": {
+    "mean_nn_dist_m": 0.01908504217863083,
+    "spearman_nn_vs_success": -0.09756975697569756,
+    "bins": [
+      {
+        "bin_m": [
+          0.0,
+          0.02
+        ],
+        "n_episodes": 60,
+        "success": 0.7611111111111111,
+        "never_reached_box": 0.03333333333333333
+      },
+      {
+        "bin_m": [
+          0.02,
+          0.04
+        ],
+        "n_episodes": 35,
+        "success": 0.6666666666666666,
+        "never_reached_box": 0.16190476190476188
+      },
+      {
+        "bin_m": [
+          0.04,
+          0.06
+        ],
+        "n_episodes": 4,
+        "success": 0.08333333333333333,
+        "never_reached_box": 0.8333333333333333
+      },
+      {
+        "bin_m": [
+          0.06,
+          1.0
+        ],
+        "n_episodes": 1,
+        "success": 0.0,
+        "never_reached_box": 1.0
+      }
+    ]
+  }
+}
